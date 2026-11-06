@@ -1,0 +1,310 @@
+.tabsContainer {
+  background: white;
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-100);
+}
+
+.detailsPage {
+  min-height: 100vh;
+}
+
+.tabsHeader {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: var(--gray-50);
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.tabBtn {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--gray-600);
+  border-radius: var(--radius-xl);
+  transition: all 0.2s;
+}
+
+.tabBtn:hover {
+  background: var(--gray-100);
+}
+
+.tabBtn.active {
+  background: var(--gold-500);
+  color: white;
+  box-shadow: var(--shadow-md);
+}
+
+.tabContent {
+  padding: 2rem;
+}
+
+/* Milestone Timeline */
+.timeline {
+  position: relative;
+}
+
+.milestone {
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.milestoneHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem;
+  background: var(--gray-50);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 2px solid transparent;
+}
+
+.milestoneHeader:hover {
+  background: var(--gray-100);
+  border-color: var(--gold-500);
+}
+
+.milestoneHeader.expanded {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-color: var(--gold-500);
+}
+
+.milestoneInfo {
+  flex: 1;
+}
+
+.milestoneName {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 0.5rem;
+}
+
+.milestoneMeta {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  font-weight: 500;
+  flex-wrap: wrap;
+}
+
+.milestoneArrow {
+  font-size: 1.5rem;
+  color: var(--gray-600);
+  transition: transform 0.3s;
+}
+
+.milestoneDetails {
+  padding: 1.5rem;
+  background: white;
+  border: 2px solid var(--gold-500);
+  border-top: none;
+  border-bottom-left-radius: var(--radius-xl);
+  border-bottom-right-radius: var(--radius-xl);
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.detailRow:last-child {
+  border-bottom: none;
+}
+
+.detailLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--gray-600);
+}
+
+.detailValue {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+/* Internal Stages */
+.internalStages {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--gray-100);
+}
+
+.stagesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Photo Gallery */
+.photoGallery {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--gray-100);
+}
+
+.galleryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.galleryThumb {
+  position: relative;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  cursor: pointer;
+  aspect-ratio: 1;
+  background: var(--gray-100);
+  transition: all 0.2s;
+}
+
+.galleryThumb:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-lg);
+}
+
+.galleryThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Photos Tab */
+.photoGalleryTab {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.galleryMilestoneCard {
+  cursor: pointer;
+  background: white;
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-100);
+  transition: all 0.2s;
+}
+
+.galleryMilestoneCard:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.cardThumbnail {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  background: var(--gray-100);
+}
+
+.cardThumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photoCount {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.cardBody {
+  padding: 1.25rem;
+}
+
+.cardBody h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--gray-900);
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--gray-600);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.cardDate {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+/* Empty State */
+.emptyState {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: var(--radius-2xl);
+  border: 2px dashed var(--gray-100);
+}
+
+.emptyState svg {
+  width: 4rem;
+  height: 4rem;
+  margin: 0 auto 1.5rem;
+  color: var(--gray-500);
+}
+
+.emptyState h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 0.5rem;
+}
+
+.emptyState p {
+  color: var(--gray-600);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tabsHeader {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .tabBtn {
+    width: 100%;
+  }
+
+  .galleryGrid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .photoGalleryTab {
+    grid-template-columns: 1fr;
+  }
+}

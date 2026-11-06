@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+.gold-bg {
+  background-image: url('/gold_theme_2.jpeg') !important;
+  background-color: #fcf6e5 !important;
+  /* Light gold fallback */
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  background-position: center !important;
+}
