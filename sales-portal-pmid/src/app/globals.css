@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 17, 24, 39;
+  --background-rgb: 249, 250, 251;
+}
+
+body {
+  position: relative;
+  color: rgb(var(--foreground-rgb));
+  font-feature-settings: "rlig" 1, "calt" 1;
+  /* optimize legibility */
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: url('/background.jpg') no-repeat center center fixed;
+  background-size: cover;
+  opacity: 0.85;
+  /* Slight transparency to let white background blending work better, or just purely for dimming */
+}
+
+/* Custom scrollbar for a sleek look */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

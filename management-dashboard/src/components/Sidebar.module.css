@@ -1,0 +1,111 @@
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    transition: var(--transition);
+}
+
+.logo {
+    padding: 2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.logoIcon {
+    font-size: 1.5rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.logoText {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.nav {
+    flex: 1;
+    padding: 0 0.75rem;
+}
+
+.navList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.navLink {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius);
+    color: var(--muted);
+    transition: var(--transition);
+}
+
+.navLink:hover {
+    background: var(--surface-hover);
+    color: var(--foreground);
+}
+
+.active {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.icon {
+    font-size: 1.25rem;
+}
+
+.footer {
+    padding: 1.5rem;
+    border-top: 1px solid var(--border);
+}
+
+.userCard {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.userCard:hover {
+    background: var(--surface-hover);
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.userName {
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.userRole {
+    font-size: 0.75rem;
+    color: var(--muted);
+}

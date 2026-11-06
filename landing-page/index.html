@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proptivio — Property Development Management Platform</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:    #2563EB;
+      --blue2:   #1D4ED8;
+      --sky:     #0EA5E9;
+      --teal:    #14B8A6;
+      --amber:   #F59E0B;
+      --amber2:  #D97706;
+      --green:   #10B981;
+      --purple:  #8B5CF6;
+      --red:     #EF4444;
+      --white:   #FFFFFF;
+      --bg:      #F8FAFC;
+      --bg2:     #EFF6FF;
+      --text:    #0F172A;
+      --sub:     #64748B;
+      --border:  #E2E8F0;
+      --border2: #CBD5E1;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: var(--white);
+      line-height: 1.6;
+    }
+
+    /* ── SHARED ── */
+    section { padding: 96px 5%; }
+    .inner { max-width: 1200px; margin: 0 auto; }
+    .tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #EFF6FF; color: var(--blue);
+      font-size: 0.76rem; font-weight: 700; letter-spacing: 0.6px;
+      text-transform: uppercase; padding: 6px 14px; border-radius: 20px;
+      margin-bottom: 18px; border: 1px solid #BFDBFE;
+    }
+    .tag .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); }
+    .section-title {
+      font-size: clamp(1.9rem, 3vw, 2.7rem); font-weight: 800;
+      line-height: 1.18; letter-spacing: -0.6px; color: var(--text);
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 1.05rem; color: var(--sub); line-height: 1.75;
+      max-width: 580px;
+    }
+    .center { text-align: center; }
+    .center .section-sub { margin: 0 auto; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #EFF6FF 0%, #F0FDFA 50%, #FFF7ED 100%);
+      padding: 90px 5% 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -180px; right: -120px;
+      width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(37,99,235,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; bottom: -200px; left: -100px;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(20,184,166,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 70px; align-items: center;
+      max-width: 1200px; margin: 0 auto;
+      position: relative; z-index: 1;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 20px; padding: 7px 16px; margin-bottom: 24px;
+      font-size: 0.78rem; font-weight: 600; color: var(--blue);
+      box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+    }
+    .hero-eyebrow .pulse {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--green);
+      box-shadow: 0 0 0 3px rgba(16,185,129,0.2);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 0 3px rgba(16,185,129,0.2); }
+      50% { box-shadow: 0 0 0 6px rgba(16,185,129,0.05); }
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 4vw, 3.5rem); font-weight: 900;
+      line-height: 1.12; letter-spacing: -1.2px; color: var(--text);
+      margin-bottom: 22px;
+    }
+    .hero h1 .grad {
+      background: linear-gradient(135deg, var(--blue), var(--sky));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      font-size: 1.08rem; color: var(--sub); line-height: 1.78;
+      margin-bottom: 38px; max-width: 490px;
+    }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 0; }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--blue), var(--blue2));
+      color: var(--white); font-weight: 700; font-size: 0.95rem;
+      padding: 15px 30px; border-radius: 12px; text-decoration: none;
+      box-shadow: 0 4px 20px rgba(37,99,235,0.35);
+      transition: transform .2s, box-shadow .2s; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(37,99,235,0.45); }
+    .btn-outline {
+      background: var(--white); border: 1.5px solid var(--border2);
+      color: var(--text); font-weight: 600; font-size: 0.95rem;
+      padding: 15px 30px; border-radius: 12px; text-decoration: none;
+      transition: border-color .2s, box-shadow .2s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-outline:hover { border-color: var(--blue); box-shadow: 0 4px 14px rgba(37,99,235,0.1); }
+
+    /* hero visual */
+    .hero-visual { position: relative; }
+    .dash-card {
+      background: var(--white); border-radius: 20px;
+      box-shadow: 0 24px 60px rgba(15,23,42,0.1), 0 4px 16px rgba(15,23,42,0.06);
+      border: 1px solid var(--border); overflow: hidden;
+    }
+    .dash-topbar {
+      background: #F8FAFC; padding: 12px 18px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .dot-r { width: 11px; height: 11px; border-radius: 50%; background: #FC5953; }
+    .dot-y { width: 11px; height: 11px; border-radius: 50%; background: #FDBC40; }
+    .dot-g { width: 11px; height: 11px; border-radius: 50%; background: #34C749; }
+    .dash-topbar-title { font-size: 0.76rem; color: var(--sub); margin-left: 8px; font-weight: 500; }
+    .dash-body { padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .dash-metric {
+      background: var(--bg); border-radius: 12px; padding: 14px;
+      border: 1px solid var(--border);
+    }
+    .dash-metric-label { font-size: 0.68rem; color: var(--sub); font-weight: 500; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.4px; }
+    .dash-metric-val { font-size: 1.4rem; font-weight: 800; color: var(--text); }
+    .dash-metric-change { font-size: 0.7rem; margin-top: 3px; font-weight: 500; }
+    .up { color: var(--green); }
+    .warn { color: var(--amber); }
+    .dash-chart-row { grid-column: 1 / -1; }
+    .dash-chart-label { font-size: 0.68rem; color: var(--sub); font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 10px; }
+    .chart-bars { display: flex; gap: 6px; align-items: flex-end; height: 64px; }
+    .bar { flex: 1; border-radius: 5px 5px 0 0; transition: opacity .2s; }
+    .bar:hover { opacity: .8; }
+    .b-blue { background: linear-gradient(to top, #2563EB, #60A5FA); }
+    .b-sky  { background: linear-gradient(to top, #0EA5E9, #7DD3FC); }
+    .b-teal { background: linear-gradient(to top, #14B8A6, #5EEAD4); }
+    .b-amber{ background: linear-gradient(to top, #F59E0B, #FCD34D); }
+
+    .float-pill {
+      position: absolute; display: flex; align-items: center; gap: 8px;
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 40px; padding: 8px 16px;
+      box-shadow: 0 8px 24px rgba(15,23,42,0.12);
+      font-size: 0.78rem; font-weight: 600; white-space: nowrap;
+    }
+    .fp1 { right: -20px; top: 22px; color: var(--green); }
+    .fp2 { left: -20px; bottom: 36px; color: var(--blue); }
+    .fp1 .fi { background: #D1FAE5; color: var(--green); width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
+    .fp2 .fi { background: #DBEAFE; color: var(--blue); width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5%;
+    }
+    .stats-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+    }
+    .stat-item {
+      padding: 32px 24px; text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-size: 2.2rem; font-weight: 900; letter-spacing: -1px;
+      background: linear-gradient(135deg, var(--blue), var(--sky));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label { font-size: 0.84rem; color: var(--sub); margin-top: 4px; font-weight: 500; }
+
+    /* ── PROBLEM ── */
+    .problem { background: var(--bg); }
+    .problem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 52px; }
+    .prob-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 18px; padding: 32px; position: relative; overflow: hidden;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .prob-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(15,23,42,0.08); }
+    .prob-stripe {
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      border-radius: 18px 18px 0 0;
+    }
+    .ps1 { background: linear-gradient(90deg, #EF4444, #F97316); }
+    .ps2 { background: linear-gradient(90deg, #F97316, #FBBF24); }
+    .ps3 { background: linear-gradient(90deg, #8B5CF6, #EC4899); }
+    .prob-icon {
+      width: 54px; height: 54px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; margin-bottom: 18px;
+    }
+    .pi1 { background: #FEF2F2; }
+    .pi2 { background: #FFF7ED; }
+    .pi3 { background: #F5F3FF; }
+    .prob-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .prob-card p { font-size: 0.88rem; color: var(--sub); line-height: 1.7; }
+
+    /* ── SOLUTION BRIDGE ── */
+    .bridge {
+      background: linear-gradient(135deg, var(--blue) 0%, #1E40AF 50%, #1D4ED8 100%);
+      padding: 72px 5%; text-align: center; position: relative; overflow: hidden;
+    }
+    .bridge::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .bridge-inner { max-width: 700px; margin: 0 auto; position: relative; z-index: 1; }
+    .bridge-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
+      color: #FDE68A; font-size: 0.76rem; font-weight: 700; letter-spacing: 0.6px;
+      text-transform: uppercase; padding: 6px 14px; border-radius: 20px; margin-bottom: 20px;
+    }
+    .bridge h2 {
+      font-size: clamp(1.7rem, 3vw, 2.4rem); font-weight: 800;
+      color: var(--white); margin-bottom: 16px; letter-spacing: -0.5px;
+    }
+    .bridge p { color: rgba(255,255,255,0.75); font-size: 1.05rem; line-height: 1.75; }
+    .bridge-modules {
+      display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 32px;
+    }
+    .bmod {
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px; padding: 10px 18px;
+      color: var(--white); font-size: 0.85rem; font-weight: 600;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .bmod-icon {
+      width: 28px; height: 28px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; font-size: 0.9rem;
+    }
+
+    /* ── PORTALS ── */
+    .portals { background: var(--white); }
+    .portals-intro {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: center; margin-bottom: 64px;
+    }
+    .portals-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .portal-card {
+      background: var(--white); border: 1.5px solid var(--border);
+      border-radius: 20px; padding: 32px;
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+      position: relative; overflow: hidden;
+    }
+    .portal-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 48px rgba(37,99,235,0.1);
+      border-color: #BFDBFE;
+    }
+    .portal-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+    .pc1::before { background: linear-gradient(90deg, #2563EB, #0EA5E9); }
+    .pc2::before { background: linear-gradient(90deg, #10B981, #14B8A6); }
+    .pc3::before { background: linear-gradient(90deg, #F59E0B, #F97316); }
+    .pc4::before { background: linear-gradient(90deg, #8B5CF6, #EC4899); }
+    .portal-icon {
+      width: 56px; height: 56px; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; margin-bottom: 20px;
+    }
+    .pi-blue   { background: #EFF6FF; }
+    .pi-green  { background: #ECFDF5; }
+    .pi-amber  { background: #FFFBEB; }
+    .pi-purple { background: #F5F3FF; }
+    .portal-card h3 {
+      font-size: 1.1rem; font-weight: 800; color: var(--text);
+      margin-bottom: 8px;
+    }
+    .portal-card .portal-desc {
+      font-size: 0.88rem; color: var(--sub); line-height: 1.7;
+      margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid var(--border);
+    }
+    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .feature-list li {
+      display: flex; align-items: flex-start; gap: 9px;
+      font-size: 0.85rem; color: var(--text);
+    }
+    .check {
+      width: 18px; height: 18px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem; font-weight: 800; flex-shrink: 0; margin-top: 1px;
+    }
+    .ck-blue   { background: #DBEAFE; color: var(--blue); }
+    .ck-green  { background: #D1FAE5; color: var(--green); }
+    .ck-amber  { background: #FEF3C7; color: var(--amber2); }
+    .ck-purple { background: #EDE9FE; color: var(--purple); }
+
+    /* ── HOW IT WORKS ── */
+    .how { background: var(--bg); }
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 60px; position: relative; }
+    .steps::before {
+      content: ''; position: absolute;
+      top: 36px; left: calc(12.5% + 20px); right: calc(12.5% + 20px);
+      height: 2px;
+      background: linear-gradient(90deg, #BFDBFE, #BAE6FD, #99F6E4, #FDE68A);
+    }
+    .step { text-align: center; }
+    .step-circle {
+      width: 72px; height: 72px; border-radius: 50%;
+      margin: 0 auto 22px; display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; position: relative; z-index: 1;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    .sc1 { background: linear-gradient(135deg, #2563EB, #60A5FA); }
+    .sc2 { background: linear-gradient(135deg, #0EA5E9, #7DD3FC); }
+    .sc3 { background: linear-gradient(135deg, #14B8A6, #5EEAD4); }
+    .sc4 { background: linear-gradient(135deg, #F59E0B, #FCD34D); }
+    .step h3 { font-size: 0.97rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+    .step p { font-size: 0.85rem; color: var(--sub); line-height: 1.7; }
+    .step-num-badge {
+      position: absolute; top: -6px; right: -6px;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--white); border: 2px solid var(--border);
+      font-size: 0.65rem; font-weight: 800; color: var(--sub);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ── BITRIX ── */
+    .bitrix { background: var(--white); }
+    .bitrix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+    .b24-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: #EFF6FF; border: 1px solid #BFDBFE;
+      border-radius: 12px; padding: 10px 18px; margin-bottom: 24px;
+      font-weight: 700; font-size: 0.92rem; color: var(--blue);
+    }
+    .b24-icon {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: linear-gradient(135deg, #2563EB, #1D4ED8);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 0.72rem; font-weight: 800;
+    }
+    .int-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+    .int-pill {
+      display: flex; align-items: center; gap: 7px;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 20px; padding: 7px 15px;
+      font-size: 0.82rem; font-weight: 600; color: var(--text);
+    }
+    .pd { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    .bitrix-visual {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 22px; padding: 28px;
+      box-shadow: 0 20px 50px rgba(37,99,235,0.08);
+    }
+    .bv-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 20px; padding-bottom: 18px; border-bottom: 1px solid var(--border);
+    }
+    .bv-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--sky));
+      flex-shrink: 0;
+    }
+    .bv-name { font-weight: 700; font-size: 0.9rem; color: var(--text); }
+    .bv-role { font-size: 0.75rem; color: var(--sub); }
+    .bv-status-dot {
+      margin-left: auto; display: flex; align-items: center; gap: 5px;
+      font-size: 0.75rem; font-weight: 600; color: var(--green);
+    }
+    .bv-status-dot::before { content: '●'; font-size: 0.6rem; }
+    .bv-list { display: flex; flex-direction: column; gap: 10px; }
+    .bv-item {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--bg); border-radius: 12px; padding: 12px 14px;
+      border: 1px solid var(--border);
+    }
+    .bv-item-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .ico-g { background: #ECFDF5; }
+    .ico-b { background: #EFF6FF; }
+    .ico-y { background: #FFFBEB; }
+    .ico-p { background: #F5F3FF; }
+    .bv-item-text { flex: 1; }
+    .bv-item-text strong { font-size: 0.84rem; color: var(--text); display: block; }
+    .bv-item-text span { font-size: 0.75rem; color: var(--sub); }
+    .badge {
+      font-size: 0.72rem; font-weight: 700; padding: 4px 10px;
+      border-radius: 20px; white-space: nowrap;
+    }
+    .bg-green  { background: #D1FAE5; color: #065F46; }
+    .bg-blue   { background: #DBEAFE; color: #1E40AF; }
+    .bg-amber  { background: #FEF3C7; color: #92400E; }
+    .bg-purple { background: #EDE9FE; color: #5B21B6; }
+
+    /* ── BENEFITS ── */
+    .benefits { background: var(--bg); }
+    .benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 52px; }
+    .benefit-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 18px; padding: 32px;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .benefit-card:hover { transform: translateY(-4px); box-shadow: 0 16px 36px rgba(37,99,235,0.08); }
+    .benefit-num {
+      font-size: 2.8rem; font-weight: 900; letter-spacing: -1.5px;
+      line-height: 1; margin-bottom: 12px;
+    }
+    .bn-blue   { background: linear-gradient(135deg,var(--blue),var(--sky)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .bn-green  { background: linear-gradient(135deg,var(--green),var(--teal)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .bn-amber  { background: linear-gradient(135deg,var(--amber),#F97316); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .bn-purple { background: linear-gradient(135deg,var(--purple),#EC4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .benefit-card h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .benefit-card p { font-size: 0.87rem; color: var(--sub); line-height: 1.7; }
+
+    /* ── PRICING ── */
+    .pricing { background: var(--white); }
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 56px; }
+    .price-card {
+      background: var(--white); border: 1.5px solid var(--border);
+      border-radius: 22px; padding: 36px; position: relative;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .price-card:hover { transform: translateY(-4px); }
+    .price-card.featured {
+      border-color: var(--blue);
+      box-shadow: 0 24px 56px rgba(37,99,235,0.14);
+      background: linear-gradient(180deg, #EFF6FF 0%, var(--white) 100%);
+    }
+    .feat-badge {
+      position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--blue), var(--sky));
+      color: white; font-size: 0.74rem; font-weight: 700;
+      padding: 5px 18px; border-radius: 20px; white-space: nowrap;
+    }
+    .plan-label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--blue); margin-bottom: 12px; }
+    .plan-price { font-size: 2.5rem; font-weight: 900; color: var(--text); letter-spacing: -1.5px; line-height: 1; }
+    .plan-price sup { font-size: 1.1rem; font-weight: 700; vertical-align: top; margin-top: 6px; }
+    .plan-period { font-size: 0.82rem; color: var(--sub); margin: 6px 0 14px; }
+    .plan-desc {
+      font-size: 0.87rem; color: var(--sub); line-height: 1.65;
+      padding-bottom: 20px; border-bottom: 1px solid var(--border); margin-bottom: 22px;
+    }
+    .plan-features { list-style: none; display: flex; flex-direction: column; gap: 11px; margin-bottom: 30px; }
+    .plan-features li {
+      display: flex; align-items: flex-start; gap: 9px;
+      font-size: 0.86rem; color: var(--text);
+    }
+    .plan-features li .ck { flex-shrink: 0; }
+    .plan-features li.off .ck { background: #F1F5F9; color: #94A3B8; }
+    .plan-features li.off { color: #94A3B8; }
+    .btn-plan {
+      display: block; text-align: center; padding: 13px 20px;
+      border-radius: 12px; font-weight: 700; font-size: 0.9rem;
+      text-decoration: none; transition: all .2s;
+    }
+    .btn-plan-blue {
+      background: linear-gradient(135deg, var(--blue), var(--blue2));
+      color: white; box-shadow: 0 4px 16px rgba(37,99,235,0.3);
+    }
+    .btn-plan-blue:hover { box-shadow: 0 8px 24px rgba(37,99,235,0.4); }
+    .btn-plan-out {
+      border: 1.5px solid var(--border2); color: var(--text);
+    }
+    .btn-plan-out:hover { border-color: var(--blue); color: var(--blue); background: #EFF6FF; }
+
+    /* ── CTA ── */
+    .cta-section {
+      background: linear-gradient(135deg, #EFF6FF 0%, #F0FDFA 50%, #FFF7ED 100%);
+      padding: 100px 5%; text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-section::before {
+      content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 400px; border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(37,99,235,0.06) 0%, transparent 70%);
+    }
+    .cta-inner { max-width: 600px; margin: 0 auto; position: relative; z-index: 1; }
+    .cta-section h2 {
+      font-size: clamp(1.9rem, 3vw, 2.8rem); font-weight: 900;
+      color: var(--text); margin-bottom: 16px; letter-spacing: -0.8px;
+    }
+    .cta-section h2 span {
+      background: linear-gradient(135deg, var(--blue), var(--sky));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .cta-section > .cta-inner > p { color: var(--sub); font-size: 1.05rem; margin-bottom: 38px; line-height: 1.75; }
+    .cta-form {
+      display: flex; background: var(--white);
+      border: 1.5px solid var(--border2); border-radius: 14px;
+      overflow: hidden; margin-bottom: 16px;
+      box-shadow: 0 8px 24px rgba(37,99,235,0.1);
+      max-width: 480px; margin: 0 auto 16px;
+    }
+    .cta-form input {
+      flex: 1; border: none; outline: none;
+      padding: 15px 20px; font-size: 0.92rem; color: var(--text);
+      background: transparent;
+    }
+    .cta-form input::placeholder { color: #94A3B8; }
+    .cta-form button {
+      background: linear-gradient(135deg, var(--blue), var(--blue2));
+      border: none; cursor: pointer; padding: 15px 24px;
+      color: white; font-weight: 700; font-size: 0.9rem;
+      transition: opacity .2s; white-space: nowrap;
+    }
+    .cta-form button:hover { opacity: .9; }
+    .cta-trust { font-size: 0.8rem; color: var(--sub); margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .cta-trust::before { content: '🔒'; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      .hero-grid, .portals-intro, .bitrix-grid { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .steps, .problem-grid, .portals-grid, .benefits-grid, .pricing-grid { grid-template-columns: 1fr; }
+      .steps::before { display: none; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+      .stat-item:nth-child(2) { border-right: none; }
+    }
+    @media (max-width: 600px) {
+      section { padding: 72px 5%; }
+      .stats-inner { grid-template-columns: 1fr 1fr; }
+      .cta-form { flex-direction: column; }
+      .cta-form button { border-radius: 0 0 12px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-eyebrow">
+        <div class="pulse"></div>
+        Built natively on Bitrix24 · For Property Developers
+      </div>
+      <h1>Run Your Entire Development from <span class="grad">One Platform</span></h1>
+      <p>From first sale to final handover — Proptivio unifies your sales team, buyers, management, and finance in a single ecosystem. No more spreadsheets. No more missed payments. No more disputes.</p>
+      <div class="hero-btns">
+        <a href="#cta" class="btn-primary">Get a Free Demo →</a>
+        <a href="#portals" class="btn-outline">Explore Features</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="dash-card">
+        <div class="dash-topbar">
+          <div class="dot-r"></div><div class="dot-y"></div><div class="dot-g"></div>
+          <span class="dash-topbar-title">Proptivio · Management Dashboard</span>
+        </div>
+        <div class="dash-body">
+          <div class="dash-metric">
+            <div class="dash-metric-label">Units Sold</div>
+            <div class="dash-metric-val">142</div>
+            <div class="dash-metric-change up">↑ 12% this month</div>
+          </div>
+          <div class="dash-metric">
+            <div class="dash-metric-label">Revenue</div>
+            <div class="dash-metric-val">RM 28.4M</div>
+            <div class="dash-metric-change up">↑ 8.3% vs last month</div>
+          </div>
+          <div class="dash-metric">
+            <div class="dash-metric-label">Dev Cost</div>
+            <div class="dash-metric-val">RM 14.1M</div>
+            <div class="dash-metric-change warn">▲ On budget track</div>
+          </div>
+          <div class="dash-metric">
+            <div class="dash-metric-label">Commission Due</div>
+            <div class="dash-metric-val">RM 568K</div>
+            <div class="dash-metric-change up">12 agents · auto-calc</div>
+          </div>
+          <div class="dash-metric dash-chart-row">
+            <div class="dash-chart-label">Monthly Sales Progress</div>
+            <div class="chart-bars">
+              <div class="bar b-blue" style="height:38%"></div>
+              <div class="bar b-sky"  style="height:52%"></div>
+              <div class="bar b-blue" style="height:45%"></div>
+              <div class="bar b-teal" style="height:70%"></div>
+              <div class="bar b-blue" style="height:78%"></div>
+              <div class="bar b-amber"style="height:88%"></div>
+              <div class="bar b-blue" style="height:94%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="float-pill fp1">
+        <div class="fi">✅</div> Milestone 3 — Block C approved
+      </div>
+      <div class="float-pill fp2">
+        <div class="fi">🔔</div> Payment due · Unit B-12
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ STATS BAR ═══════════════════════════════ -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-num">4</div>
+      <div class="stat-label">Integrated Portals</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Real-time Sync</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">48hr</div>
+      <div class="stat-label">Setup Time</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">0</div>
+      <div class="stat-label">Manual Handoffs</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ PROBLEM ═══════════════════════════════ -->
+<section class="problem">
+  <div class="inner">
+    <div class="center">
+      <div class="tag"><div class="dot"></div>The Problem</div>
+      <h2 class="section-title">Property Developers Are Drowning in Disconnected Tools</h2>
+      <p class="section-sub">Spreadsheets, WhatsApp groups, and siloed systems create costly errors and delays at every stage of development.</p>
+    </div>
+    <div class="problem-grid">
+      <div class="prob-card">
+        <div class="prob-stripe ps1"></div>
+        <div class="prob-icon pi1">📋</div>
+        <h3>Manual Sales Tracking</h3>
+        <p>Sales agents juggle leads across spreadsheets and chat groups. Inventory confusion leads to double-bookings and lost sales opportunities worth millions.</p>
+      </div>
+      <div class="prob-card">
+        <div class="prob-stripe ps2"></div>
+        <div class="prob-icon pi2">🔇</div>
+        <h3>Buyers Left in the Dark</h3>
+        <p>Buyers constantly call to ask "When is my next payment?" with no self-serve visibility into construction milestones or upcoming billing schedules.</p>
+      </div>
+      <div class="prob-card">
+        <div class="prob-stripe ps3"></div>
+        <div class="prob-icon pi3">💸</div>
+        <h3>Commission Disputes</h3>
+        <p>Manual commission calculations create disputes, delayed agent payouts, and erode team trust — costing you your best sales performers.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ BRIDGE ═══════════════════════════════ -->
+<div class="bridge">
+  <div class="bridge-inner">
+    <div class="bridge-tag">✦ The Solution</div>
+    <h2>One Ecosystem. Four Portals. Total Clarity.</h2>
+    <p>Proptivio replaces every disconnected tool with a single platform built specifically for property development — powered by the enterprise infrastructure of Bitrix24.</p>
+    <div class="bridge-modules">
+      <div class="bmod"><div class="bmod-icon" style="background:rgba(255,255,255,0.15)">🏷️</div> Sales Portal</div>
+      <div class="bmod"><div class="bmod-icon" style="background:rgba(255,255,255,0.15)">🏠</div> Buyer Portal</div>
+      <div class="bmod"><div class="bmod-icon" style="background:rgba(255,255,255,0.15)">📊</div> Management Dashboard</div>
+      <div class="bmod"><div class="bmod-icon" style="background:rgba(255,255,255,0.15)">💰</div> Commission Portal</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ PORTALS ═══════════════════════════════ -->
+<section class="portals" id="portals">
+  <div class="inner">
+    <div class="portals-intro">
+      <div>
+        <div class="tag"><div class="dot"></div>4 Integrated Portals</div>
+        <h2 class="section-title">Every Stakeholder Gets Their Own Purpose-Built Portal</h2>
+      </div>
+      <p class="section-sub">Proptivio is four deeply interconnected portals that share one live data source — so everyone from the sales floor to the boardroom sees the exact same truth, in real time.</p>
+    </div>
+
+    <div class="portals-grid">
+      <div class="portal-card pc1">
+        <div class="portal-icon pi-blue">🏷️</div>
+        <h3>Sales Portal</h3>
+        <p class="portal-desc">Give your sales agents a professional command centre to manage every lead, see live inventory, and close deals faster than ever before.</p>
+        <ul class="feature-list">
+          <li><span class="check ck-blue">✓</span> Live unit inventory with real-time availability</li>
+          <li><span class="check ck-blue">✓</span> Lead pipeline & automated follow-up reminders</li>
+          <li><span class="check ck-blue">✓</span> Booking form with auto-generated SPA draft</li>
+          <li><span class="check ck-blue">✓</span> Agent performance leaderboard</li>
+          <li><span class="check ck-blue">✓</span> Price list & digital brochure distribution</li>
+        </ul>
+      </div>
+
+      <div class="portal-card pc2">
+        <div class="portal-icon pi-green">🏠</div>
+        <h3>Buyer Portal</h3>
+        <p class="portal-desc">Build buyer confidence and reduce support calls by giving purchasers transparent, real-time access to their entire property journey.</p>
+        <ul class="feature-list">
+          <li><span class="check ck-green">✓</span> Construction milestone timeline tracker</li>
+          <li><span class="check ck-green">✓</span> Progressive payment schedule with due dates</li>
+          <li><span class="check ck-green">✓</span> Digital document vault (SPA, receipts)</li>
+          <li><span class="check ck-green">✓</span> Automated payment reminder notifications</li>
+          <li><span class="check ck-green">✓</span> Direct messaging channel with developer</li>
+        </ul>
+      </div>
+
+      <div class="portal-card pc3">
+        <div class="portal-icon pi-amber">📊</div>
+        <h3>Management Dashboard</h3>
+        <p class="portal-desc">Give your leadership a bird's-eye view of the entire development — from construction costs to sales velocity, all in one place.</p>
+        <ul class="feature-list">
+          <li><span class="check ck-amber">✓</span> Real-time revenue vs. development cost tracking</li>
+          <li><span class="check ck-amber">✓</span> Unit sales analytics by block, type & agent</li>
+          <li><span class="check ck-amber">✓</span> Construction progress vs. payment collection</li>
+          <li><span class="check ck-amber">✓</span> Contractor payment approval workflows</li>
+          <li><span class="check ck-amber">✓</span> Exportable reports for board presentations</li>
+        </ul>
+      </div>
+
+      <div class="portal-card pc4">
+        <div class="portal-icon pi-purple">💰</div>
+        <h3>Commission Portal</h3>
+        <p class="portal-desc">Automate every commission calculation and give agents full transparency on their earnings — zero disputes, zero spreadsheets, zero excuses.</p>
+        <ul class="feature-list">
+          <li><span class="check ck-purple">✓</span> Auto-calculated commissions per booking</li>
+          <li><span class="check ck-purple">✓</span> Multi-tier commission structures supported</li>
+          <li><span class="check ck-purple">✓</span> Agent payout schedule & full history</li>
+          <li><span class="check ck-purple">✓</span> Commission tied to SPA signing milestones</li>
+          <li><span class="check ck-purple">✓</span> Finance team approval workflow</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ HOW IT WORKS ═══════════════════════════════ -->
+<section class="how" id="how">
+  <div class="inner">
+    <div class="center">
+      <div class="tag"><div class="dot"></div>How It Works</div>
+      <h2 class="section-title">Up and Running in Days, Not Months</h2>
+      <p class="section-sub">We handle the entire setup. You focus on what you do best — selling units and building great properties.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-circle sc1" style="position:relative">
+          🔗
+          <span class="step-num-badge">01</span>
+        </div>
+        <h3>Connect Bitrix24</h3>
+        <p>We integrate Proptivio directly into your existing Bitrix24 workspace — no new platforms, no new logins.</p>
+      </div>
+      <div class="step">
+        <div class="step-circle sc2" style="position:relative">
+          🏗
+          <span class="step-num-badge">02</span>
+        </div>
+        <h3>Configure Your Project</h3>
+        <p>Add your blocks, unit types, pricing, construction milestones, and commission structures with our guided setup.</p>
+      </div>
+      <div class="step">
+        <div class="step-circle sc3" style="position:relative">
+          👥
+          <span class="step-num-badge">03</span>
+        </div>
+        <h3>Onboard Your Team</h3>
+        <p>Invite agents, buyers, and management. Each group automatically sees only their relevant portal with the right data.</p>
+      </div>
+      <div class="step">
+        <div class="step-circle sc4" style="position:relative">
+          🚀
+          <span class="step-num-badge">04</span>
+        </div>
+        <h3>Go Live</h3>
+        <p>Start selling with full visibility. Every action auto-syncs across all four portals instantly — no manual updates needed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ BITRIX ═══════════════════════════════ -->
+<section class="bitrix" id="integration">
+  <div class="inner">
+    <div class="bitrix-grid">
+      <div>
+        <div class="b24-badge">
+          <div class="b24-icon">B24</div>
+          Powered by Bitrix24
+        </div>
+        <div class="tag"><div class="dot"></div>Native Integration</div>
+        <h2 class="section-title">Built on the Enterprise Platform You Already Trust</h2>
+        <p class="section-sub" style="margin-bottom:20px">Proptivio is not a standalone app — it extends Bitrix24 with property-specific intelligence. All your CRM contacts, deals, tasks, and documents stay in one place.</p>
+        <div class="int-pills">
+          <div class="int-pill"><div class="pd" style="background:#2563EB"></div> CRM Contacts Sync</div>
+          <div class="int-pill"><div class="pd" style="background:#10B981"></div> Deal Pipeline</div>
+          <div class="int-pill"><div class="pd" style="background:#F59E0B"></div> Task Automation</div>
+          <div class="int-pill"><div class="pd" style="background:#8B5CF6"></div> User Roles & Access</div>
+          <div class="int-pill"><div class="pd" style="background:#EF4444"></div> Notification Hub</div>
+          <div class="int-pill"><div class="pd" style="background:#0EA5E9"></div> Document Storage</div>
+        </div>
+      </div>
+
+      <div class="bitrix-visual">
+        <div class="bv-header">
+          <div class="bv-avatar"></div>
+          <div>
+            <div class="bv-name">Ahmad Razif</div>
+            <div class="bv-role">Senior Sales Agent</div>
+          </div>
+          <div class="bv-status-dot">Active</div>
+        </div>
+        <div class="bv-list">
+          <div class="bv-item">
+            <div class="bv-item-icon ico-g">🏠</div>
+            <div class="bv-item-text">
+              <strong>Unit B-12 — Booking Confirmed</strong>
+              <span>Buyer: Lim Wei Kang · Today, 10:42 AM</span>
+            </div>
+            <span class="badge bg-green">Booked</span>
+          </div>
+          <div class="bv-item">
+            <div class="bv-item-icon ico-b">📞</div>
+            <div class="bv-item-text">
+              <strong>Follow-up: Siti Norzahra</strong>
+              <span>Lead interested in Type B units · In CRM</span>
+            </div>
+            <span class="badge bg-blue">Warm Lead</span>
+          </div>
+          <div class="bv-item">
+            <div class="bv-item-icon ico-y">💰</div>
+            <div class="bv-item-text">
+              <strong>Commission RM 4,500 — Pending</strong>
+              <span>Awaiting SPA signing · Unit A-07</span>
+            </div>
+            <span class="badge bg-amber">Pending</span>
+          </div>
+          <div class="bv-item">
+            <div class="bv-item-icon ico-p">🔔</div>
+            <div class="bv-item-text">
+              <strong>Milestone 4 reached — Block C</strong>
+              <span>Payment trigger sent to 18 buyers automatically</span>
+            </div>
+            <span class="badge bg-purple">Auto-sent</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ BENEFITS ═══════════════════════════════ -->
+<section class="benefits">
+  <div class="inner">
+    <div class="center">
+      <div class="tag"><div class="dot"></div>Why Proptivio</div>
+      <h2 class="section-title">Real Results for Property Developers</h2>
+      <p class="section-sub">Every feature was designed around how Malaysian developers actually operate — on the ground, in the office, and in the field.</p>
+    </div>
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <div class="benefit-num bn-blue">60%</div>
+        <h3>Less Admin Time</h3>
+        <p>Automated payment triggers, commission calculations, and buyer notifications eliminate hours of manual work every single week.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-num bn-green">0</div>
+        <h3>Double Bookings</h3>
+        <p>Real-time unit inventory lock prevents two agents from booking the same unit — a costly mistake that can damage your reputation and cost millions.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-num bn-amber">24/7</div>
+        <h3>Buyer Self-Service</h3>
+        <p>Buyers check their payment schedule, view construction milestones, and download documents anytime — reducing your support team's workload dramatically.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-num bn-purple">100%</div>
+        <h3>Commission Accuracy</h3>
+        <p>Rule-based commission engine calculates agent earnings automatically — fair, transparent, and fully auditable with a complete history trail.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-num bn-blue">1</div>
+        <h3>Single Source of Truth</h3>
+        <p>All four portals pull from the same Bitrix24 database. No version conflicts, no stale data, no more "which spreadsheet is the correct one?"</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-num bn-green">∞</div>
+        <h3>Scalable Projects</h3>
+        <p>Run multiple developments simultaneously. Each project gets its own workspace, milestones, and team — all under one unified account.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SHOWCASE ═══════════════════════════════ -->
+<section class="showcase" id="showcase">
+  <div class="inner">
+    <div class="center">
+      <div class="tag"><div class="dot"></div>See It In Action</div>
+      <h2 class="section-title">Real Screens. Real Workflows.</h2>
+      <p class="section-sub">Take a closer look at how each portal works — built for everyone from the sales agent on the ground to the director in the boardroom.</p>
+    </div>
+
+    <!-- Portal Tabs -->
+    <div class="sc-tabs">
+      <button class="sc-tab active" onclick="switchPortal('sales')">
+        <span class="sc-tab-icon">🏷️</span> Sales Portal
+      </button>
+      <button class="sc-tab" onclick="switchPortal('buyer')">
+        <span class="sc-tab-icon">🏠</span> Buyer Portal
+      </button>
+      <button class="sc-tab" onclick="switchPortal('management')">
+        <span class="sc-tab-icon">📊</span> Management Dashboard
+      </button>
+      <button class="sc-tab" onclick="switchPortal('commission')">
+        <span class="sc-tab-icon">💰</span> Commission Portal
+      </button>
+      <button class="sc-tab" onclick="switchPortal('crm')">
+        <span class="sc-tab-icon">🔗</span> Bitrix24 CRM Integration
+      </button>
+    </div>
+
+    <!-- ── SALES PORTAL ── -->
+    <div class="sc-panel active" id="panel-sales">
+      <div class="sc-layout">
+        <div class="sc-thumbnails">
+          <div class="sc-thumb active" onclick="showScreen('sales',0)">
+            <div class="sc-thumb-img"><img src="screenshots/sales-1.png" alt="Sales Overview" /></div>
+            <div class="sc-thumb-label">Sales Overview</div>
+          </div>
+          <div class="sc-thumb" onclick="showScreen('sales',1)">
+            <div class="sc-thumb-img"><img src="screenshots/sales-2.png" alt="Unit Inventory" /></div>
+            <div class="sc-thumb-label">Unit Inventory</div>
+          </div>
+          <div class="sc-thumb" onclick="showScreen('sales',2)">
+            <div class="sc-thumb-img"><img src="screenshots/sales-3.png" alt="Booking Form" /></div>
+            <div class="sc-thumb-label">Booking Form</div>
+          </div>
+        </div>
+        <div class="sc-main-view">
+          <div class="sc-screen active" id="sales-screen-0">
+            <div class="sc-browser-bar">
+              <div class="sc-dots"><span></span><span></span><span></span></div>
+              <div class="sc-url">proptivio.app / sales / overview</div>
+            </div>
+            <img src="screenshots/sales-1.png" alt="Sales Overview Dashboard" />
+          </div>
+          <div class="sc-screen" id="sales-screen-1">
+            <div class="sc-browser-bar">
+              <div class="sc-dots"><span></span><span></span><span></span></div>
+              <div class="sc-url">proptivio.app / sales / units</div>
+            </div>
+            <img src="screenshots/sales-2.png" alt="Unit Inventory" />
+          </div>
+          <div class="sc-screen" id="sales-screen-2">
+            <div class="sc-browser-bar">
+              <div class="sc-dots"><span></span><span></span><span></span></div>
+              <div class="sc-url">proptivio.app / sales / booking</div>
+            </div>
+            <img src="screenshots/sales-3.png" alt="Booking Form" />
+          </div>
+          <div class="sc-caption" id="sales-caption-0">
+            <strong>Sales Overview</strong> — Track total confirmed sales, pending bookings, available units and real-time inventory status. Full GDV visibility at a glance.
+          </div>
+          <div class="sc-caption" id="sales-caption-1" style="display:none">
+            <strong>Unit Inventory</strong> — View every unit by floor, filter by type or view (Southeast/Northwest), and see live status — Available, Booking, Hold, or Sold.
+          </div>
+          <div class="sc-caption" id="sales-caption-2" style="display:none">
+            <strong>Booking Form</strong> — Agents complete the booking directly in the portal. Client details, payment mode, and booking fee are captured and synced to Bitrix24 instantly.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── BUYER PORTAL ── -->
+    <div class="sc-panel" id="panel-buyer">
+      <div class="sc-layout">
+        <div class="sc-thumbnails">
+          <div class="sc-thumb active" onclick="showScreen('buyer',0)">
+            <div class="sc-thumb-img"><img src="screenshots/buyer-1.png" alt="My Units" /></div>
+            <div class="sc-thumb-label">My Units</div>
+          </div>
+          <div class="sc-thumb" onclick="showScreen('buyer',1)">
+            <div class="sc-thumb-img"><img src="screenshots/buyer-2.png" alt="Construction Milestones" /></div>
+            <div class="sc-thumb-label">Milestones</div>
+          </div>
+        </div>
+        <div class="sc-main-view">
+          <div class="sc-screen active" id="buyer-screen-0">
+            <div class="sc-browser-bar">
+              <div class="sc-dots"><span></span><span></span><span></span></div>
+              <div class="sc-url">proptivio.app / buyer / my-units</div>
+            </div>
+            <img src="screenshots/buyer-1.png" alt="My Units" />
+          </div>
+          <div class="sc-screen" id="buyer-screen-1">
+            <div class="sc-browser-bar">
+              <div class="sc-dots"><span></span><span></span><span></span></div>
+              <div class="sc-url">proptivio.app / buyer / milestones</div>
+            </div>
+            <img src="screenshots/buyer-2.png" alt="Construction Milestones" />
+          </div>
+          <div class="sc-caption" id="buyer-caption-0">
+            <strong>My Units</strong> — Buyers see their purchased unit, contract value, floor details, and live construction progress percentage — all in one clean view.
+          </div>
+          <div class="sc-caption" id="buyer-caption-1" style="display:none">
+            <strong>Construction Milestones</strong> — Each milestone shows start/end dates, completion percentage, and site photos uploaded by the developer — full transparency for the buyer.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MANAGEMENT DASHBOARD ── -->
+    <div class="sc-panel" id="panel-management">
+      <div class="sc-layout">
+        <div class="sc-thumbnails">
+          <div class="sc-thumb active" onclick="showScreen('management',0)">
+            <div class="sc-thumb-img"><img src="screenshots/dashboard-1.png" alt="Sales Overview" /></div>
+            <div class="sc-thumb-label">Sales Overview</div>
+          </div>
+          <div class="sc-thumb" onclick="showScreen('management',1)">
+            <div class="sc-thumb-img"><img src="screenshots/dashboard-2.png" alt="Construction Cost" /></div>
+            <div class="sc-thumb-label">Construction Cost</div>
+          </div>
+        </div>
+        <div class="sc-main-view">
+          <div class="sc-screen active" id="management-screen-0">
+            <div class="sc-browser-bar">
+              <div class="sc-dots"><span></span><span></span><span></span></div>
+              <div class="sc-url">proptivio.app / management / dashboard</div>
+            </div>
+            <img src="screenshots/dashboard-1.png" alt="Management Dashboard Sales Overview" />
+          </div>
+          <div class="sc-screen" id="management-screen-1">
+            <div class="sc-browser-bar">
+              <div class="sc-dots"><span></span><span></span><span></span></div>
+              <div class="sc-url">proptivio.app / management / construction-cost</div>
+            </div>
+            <img src="screenshots/dashboard-2.png" alt="Construction Cost Tracker" />
+          </div>
+          <div class="sc-caption" id="management-caption-0">
+            <strong>Sales Overview</strong> — Directors see units sold, total revenue, inventory count, and GDV across all projects at a glance. Drill down by project (Gen Soho, Retail) with a single click.
+          </div>
+          <div class="sc-caption" id="management-caption-1" style="display:none">
+            <strong>Construction Cost Tracker</strong> — Monitor planned vs. actual spend per milestone in real time. Instantly see which milestones are under or over budget with variance breakdowns down to sub-contractor level.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── COMMISSION PORTAL ── -->
+    <div class="sc-panel" id="panel-commission">
+      <div class="sc-layout">
+        <div class="sc-thumbnails">
+          <div class="sc-thumb active" onclick="showScreen('commission',0)">
+            <div class="sc-thumb-img"><img src="screenshots/commission-1.png" alt="Transaction Overview" /></div>
+            <div class="sc-thumb-label">Transactions</div>
+          </div>
+          <div class="sc-thumb" onclick="showScreen('commission',1)">
+            <div class="sc-thumb-img"><img src="screenshots/commission-2.png" alt="Agent Commissions" /></div>
+            <div class="sc-thumb-label">Agent View</div>
+          </div>
+        </div>
+        <div class="sc-main-view">
+          <div class="sc-screen active" id="commission-screen-0">
+            <div class="sc-browser-bar">
+              <div class="sc-dots"><span></span><span></span><span></span></div>
+              <div class="sc-url">proptivio.app / commission / overview</div>
+            </div>
+            <img src="screenshots/commission-1.png" alt="Commission Transaction Overview" />
+          </div>
+          <div class="sc-screen" id="commission-screen-1">
+            <div class="sc-browser-bar">
+              <div class="sc-dots"><span></span><span></span><span></span></div>
+              <div class="sc-url">proptivio.app / commission / agents</div>
+            </div>
+            <img src="screenshots/commission-2.png" alt="Commission Agent View" />
+          </div>
+          <div class="sc-caption" id="commission-caption-0">
+            <strong>Transaction Overview</strong> — Every commission record is auto-generated per deal. See total commission payable, deal details, buyer name, agent, rate, and calculated amount — all in one table.
+          </div>
+          <div class="sc-caption" id="commission-caption-1" style="display:none">
+            <strong>Agent Commission View</strong> — Finance teams and agents see a full breakdown per agent — total sales, commission earned, pending transactions, and individual deal records. Zero ambiguity, zero disputes.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CRM INTEGRATION ── -->
+    <div class="sc-panel" id="panel-crm">
+      <div class="sc-layout">
+        <div class="sc-thumbnails">
+          <div class="sc-thumb active" onclick="showScreen('crm',0)">
+            <div class="sc-thumb-img"><img src="screenshots/crm-1.png" alt="CRM Deal Pipeline" /></div>
+            <div class="sc-thumb-label">Deal Pipeline</div>
+          </div>
+          <div class="sc-thumb" onclick="showScreen('crm',1)">
+            <div class="sc-thumb-img"><img src="screenshots/crm-2.png" alt="CRM Filtered View" /></div>
+            <div class="sc-thumb-label">Filtered View</div>
+          </div>
+        </div>
+        <div class="sc-main-view">
+          <div class="sc-screen active" id="crm-screen-0">
+            <div class="sc-browser-bar">
+              <div class="sc-dots"><span></span><span></span><span></span></div>
+              <div class="sc-url">bitrix24.com / crm / deals / kanban</div>
+            </div>
+            <img src="screenshots/crm-1.png" alt="Bitrix24 CRM Deal Pipeline" />
+          </div>
+          <div class="sc-screen" id="crm-screen-1">
+            <div class="sc-browser-bar">
+              <div class="sc-dots"><span></span><span></span><span></span></div>
+              <div class="sc-url">bitrix24.com / crm / deals / kanban — filtered</div>
+            </div>
+            <img src="screenshots/crm-2.png" alt="Bitrix24 CRM Filtered Pipeline" />
+          </div>
+          <div class="sc-caption" id="crm-caption-0">
+            <strong>Live CRM Deal Pipeline</strong> — Every booking made in Proptivio automatically creates and moves a deal through your Bitrix24 CRM pipeline. Track total deal value per stage — from first contact all the way to SPA signed — without any manual data entry.
+          </div>
+          <div class="sc-caption" id="crm-caption-1" style="display:none">
+            <strong>Filtered Pipeline View</strong> — Filter deals by agent, project, unit type, or stage in seconds. Your sales manager gets a live snapshot of the entire pipeline value and bottlenecks — all synced directly from Proptivio in real time.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  /* ── SHOWCASE ── */
+  .showcase { background: var(--bg); }
+  .sc-tabs {
+    display: flex; gap: 10px; margin-top: 48px; margin-bottom: 36px;
+    flex-wrap: wrap; justify-content: center;
+  }
+  .sc-tab {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 22px; border-radius: 12px; cursor: pointer;
+    font-size: 0.88rem; font-weight: 600; border: 1.5px solid var(--border);
+    background: var(--white); color: var(--sub);
+    transition: all .2s; font-family: 'Inter', sans-serif;
+  }
+  .sc-tab-icon { font-size: 1rem; }
+  .sc-tab:hover { border-color: var(--blue); color: var(--blue); }
+  .sc-tab.active {
+    background: var(--blue); border-color: var(--blue);
+    color: var(--white); box-shadow: 0 4px 16px rgba(37,99,235,0.3);
+  }
+  .sc-panel { display: none; }
+  .sc-panel.active { display: block; }
+  .sc-layout { display: grid; grid-template-columns: 200px 1fr; gap: 20px; align-items: start; }
+  .sc-thumbnails { display: flex; flex-direction: column; gap: 12px; }
+  .sc-thumb {
+    background: var(--white); border: 1.5px solid var(--border);
+    border-radius: 12px; padding: 10px; cursor: pointer;
+    transition: all .2s;
+  }
+  .sc-thumb:hover { border-color: var(--blue); box-shadow: 0 4px 12px rgba(37,99,235,0.1); }
+  .sc-thumb.active { border-color: var(--blue); box-shadow: 0 4px 16px rgba(37,99,235,0.15); }
+  .sc-thumb-img {
+    width: 100%; aspect-ratio: 16/10; border-radius: 8px;
+    overflow: hidden; background: var(--bg); margin-bottom: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sc-thumb-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .sc-placeholder { background: linear-gradient(135deg, #EFF6FF, #F0FDFA); font-size: 1.8rem; }
+  .sc-thumb-label { font-size: 0.76rem; font-weight: 600; color: var(--sub); text-align: center; }
+  .sc-thumb.active .sc-thumb-label { color: var(--blue); }
+  .sc-main-view { position: relative; }
+  .sc-screen { display: none; }
+  .sc-screen.active { display: block; }
+  .sc-browser-bar {
+    background: #F1F5F9; border: 1px solid var(--border);
+    border-bottom: none; border-radius: 14px 14px 0 0;
+    padding: 10px 16px; display: flex; align-items: center; gap: 12px;
+  }
+  .sc-dots { display: flex; gap: 6px; }
+  .sc-dots span {
+    width: 11px; height: 11px; border-radius: 50%;
+  }
+  .sc-dots span:nth-child(1) { background: #FC5953; }
+  .sc-dots span:nth-child(2) { background: #FDBC40; }
+  .sc-dots span:nth-child(3) { background: #34C749; }
+  .sc-url {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 6px; padding: 4px 14px; font-size: 0.76rem;
+    color: var(--sub); flex: 1; font-family: monospace;
+  }
+  .sc-screen img {
+    width: 100%; display: block;
+    border: 1px solid var(--border); border-top: none;
+    border-radius: 0 0 14px 14px;
+    box-shadow: 0 16px 40px rgba(15,23,42,0.1);
+  }
+  .sc-coming-soon {
+    width: 100%; aspect-ratio: 16/9;
+    background: linear-gradient(135deg, #EFF6FF 0%, #F0FDFA 100%);
+    border: 1px solid var(--border); border-top: none;
+    border-radius: 0 0 14px 14px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 10px;
+  }
+  .sc-cs-icon { font-size: 3rem; }
+  .sc-cs-text { font-size: 1rem; font-weight: 700; color: var(--sub); }
+  .sc-cs-sub { font-size: 0.82rem; color: #94A3B8; }
+  .sc-caption {
+    margin-top: 16px; background: var(--white);
+    border: 1px solid var(--border); border-radius: 12px;
+    padding: 16px 20px; font-size: 0.87rem; color: var(--sub); line-height: 1.7;
+  }
+  .sc-caption strong { color: var(--text); }
+  @media (max-width: 768px) {
+    .sc-layout { grid-template-columns: 1fr; }
+    .sc-thumbnails { flex-direction: row; overflow-x: auto; }
+    .sc-thumb { min-width: 130px; }
+  }
+</style>
+
+<script>
+  function switchPortal(name) {
+    document.querySelectorAll('.sc-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.sc-panel').forEach(p => p.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    document.getElementById('panel-' + name).classList.add('active');
+  }
+  function showScreen(portal, idx) {
+    const panel = document.getElementById('panel-' + portal);
+    panel.querySelectorAll('.sc-thumb').forEach((t,i) => t.classList.toggle('active', i===idx));
+    panel.querySelectorAll('.sc-screen').forEach((s,i) => s.classList.toggle('active', i===idx));
+    panel.querySelectorAll('.sc-caption').forEach((c,i) => c.style.display = i===idx ? 'block' : 'none');
+  }
+</script>
+
+<!-- ═══════════════════════════════ PRICING ═══════════════════════════════ -->
+<section class="pricing" id="pricing">
+  <div class="inner">
+    <div class="center">
+      <div class="tag"><div class="dot"></div>Pricing</div>
+      <h2 class="section-title">Simple, Transparent Pricing</h2>
+      <p class="section-sub">Every plan includes a one-time setup fee to get you fully configured, then a flat monthly subscription. No hidden charges, no surprises.</p>
+    </div>
+
+    <!-- Setup Fee Banner -->
+    <div style="
+      background: linear-gradient(135deg,#EFF6FF,#F0FDFA);
+      border: 1.5px solid #BFDBFE; border-radius: 18px;
+      padding: 28px 36px; margin-top: 44px; margin-bottom: 12px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 20px;
+    ">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <div style="
+          width:52px; height:52px; border-radius:14px;
+          background:linear-gradient(135deg,#2563EB,#0EA5E9);
+          display:flex; align-items:center; justify-content:center;
+          font-size:1.4rem; flex-shrink:0;
+        ">🛠️</div>
+        <div>
+          <div style="font-weight:800; font-size:1.05rem; color:#0F172A; margin-bottom:4px;">One-Time Setup & Onboarding Fee</div>
+          <div style="font-size:0.87rem; color:#64748B; line-height:1.6;">We configure your entire workspace — units, milestones, commission rules, user accounts, and Bitrix24 integration. You start on day one, ready to go.</div>
+        </div>
+      </div>
+      <div style="text-align:right; flex-shrink:0;">
+        <div style="font-size:0.75rem; color:#64748B; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">Starting from</div>
+        <div style="font-size:2rem; font-weight:900; color:#0F172A; letter-spacing:-1px;"><sup style="font-size:1rem;vertical-align:top;margin-top:6px;">RM</sup>2,000 <span style="font-size:0.9rem;font-weight:400;color:#64748B;">one-time</span></div>
+      </div>
+    </div>
+    <div style="text-align:center; font-size:0.8rem; color:#94A3B8; margin-bottom:44px; letter-spacing:0.3px;">↑ Paid once on sign-up &nbsp;·&nbsp; then choose your monthly plan below ↓</div>
+
+    <div class="pricing-grid">
+
+      <div class="price-card">
+        <div class="plan-label">Starter</div>
+        <div class="plan-price"><sup>RM</sup>1,499</div>
+        <div class="plan-period">/ month &nbsp;·&nbsp; billed monthly</div>
+        <div class="plan-desc">Perfect for single-project developers launching their first development with a small, focused sales team.</div>
+        <ul class="plan-features">
+          <li><span class="check ck-blue">✓</span> 1 active development project</li>
+          <li><span class="check ck-blue">✓</span> Up to 200 units</li>
+          <li><span class="check ck-blue">✓</span> 10 sales agent accounts</li>
+          <li><span class="check ck-blue">✓</span> Buyer Portal (unlimited buyers)</li>
+          <li><span class="check ck-blue">✓</span> Commission Portal (basic rules)</li>
+          <li><span class="check ck-blue">✓</span> Management Dashboard</li>
+          <li><span class="check ck-blue">✓</span> Email & chat support</li>
+          <li class="off"><span class="check ck-blue">✕</span> Multi-project management</li>
+          <li class="off"><span class="check ck-blue">✕</span> Custom milestone types</li>
+        </ul>
+        <a href="#cta" class="btn-plan btn-plan-out">Get Started</a>
+        <div style="text-align:center; margin-top:12px; font-size:0.76rem; color:#94A3B8;">+ RM 2,000 one-time setup fee</div>
+      </div>
+
+      <div class="price-card featured">
+        <div class="feat-badge">⚡ Most Popular</div>
+        <div class="plan-label">Professional</div>
+        <div class="plan-price"><sup>RM</sup>3,499</div>
+        <div class="plan-period">/ month &nbsp;·&nbsp; billed monthly</div>
+        <div class="plan-desc">For established developers managing multiple phases or projects simultaneously with larger sales teams.</div>
+        <ul class="plan-features">
+          <li><span class="check ck-blue">✓</span> Up to 5 active projects</li>
+          <li><span class="check ck-blue">✓</span> Unlimited units</li>
+          <li><span class="check ck-blue">✓</span> 50 sales agent accounts</li>
+          <li><span class="check ck-blue">✓</span> Buyer Portal (unlimited buyers)</li>
+          <li><span class="check ck-blue">✓</span> Commission Portal (multi-tier)</li>
+          <li><span class="check ck-blue">✓</span> Full Management Dashboard</li>
+          <li><span class="check ck-blue">✓</span> Custom milestone types</li>
+          <li><span class="check ck-blue">✓</span> Priority support</li>
+        </ul>
+        <a href="#cta" class="btn-plan btn-plan-blue">Get Started</a>
+        <div style="text-align:center; margin-top:12px; font-size:0.76rem; color:#64748B;">+ RM 3,500 one-time setup fee</div>
+      </div>
+
+      <div class="price-card">
+        <div class="plan-label">Enterprise</div>
+        <div class="plan-price" style="font-size:1.8rem;padding:8px 0 2px">Custom</div>
+        <div class="plan-period">tailored to your organisation</div>
+        <div class="plan-desc">For large developers, holding companies, or groups running many projects with complex structures and branding needs.</div>
+        <ul class="plan-features">
+          <li><span class="check ck-blue">✓</span> Unlimited projects & units</li>
+          <li><span class="check ck-blue">✓</span> Unlimited agent accounts</li>
+          <li><span class="check ck-blue">✓</span> White-label branding</li>
+          <li><span class="check ck-blue">✓</span> Custom integrations & API access</li>
+          <li><span class="check ck-blue">✓</span> Dedicated account manager</li>
+          <li><span class="check ck-blue">✓</span> On-site onboarding & training</li>
+          <li><span class="check ck-blue">✓</span> SLA-backed uptime guarantee</li>
+          <li><span class="check ck-blue">✓</span> Custom commission rules</li>
+        </ul>
+        <a href="#cta" class="btn-plan btn-plan-out">Contact Sales</a>
+        <div style="text-align:center; margin-top:12px; font-size:0.76rem; color:#94A3B8;">Setup fee quoted upon consultation</div>
+      </div>
+
+    </div>
+
+    <!-- What's included note -->
+    <div style="
+      margin-top:36px; background:var(--bg); border:1px solid var(--border);
+      border-radius:14px; padding:22px 28px;
+      display:flex; align-items:flex-start; gap:14px;
+    ">
+      <div style="font-size:1.2rem; flex-shrink:0; margin-top:2px;">💡</div>
+      <div>
+        <div style="font-weight:700; font-size:0.9rem; color:var(--text); margin-bottom:4px;">What's included in every plan</div>
+        <div style="font-size:0.84rem; color:var(--sub); line-height:1.7;">
+          All 4 portals (Sales, Buyer, Management & Commission) &nbsp;·&nbsp; Bitrix24 native integration &nbsp;·&nbsp; Automatic system updates &nbsp;·&nbsp; Data backups &nbsp;·&nbsp; SSL security &nbsp;·&nbsp; Cancel anytime
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ CTA ═══════════════════════════════ -->
+<section class="cta-section" id="cta">
+  <div class="cta-inner">
+    <div class="tag" style="margin:0 auto 18px"><div class="dot"></div>Get Started Today</div>
+    <h2>Ready to <span>Modernise</span> Your Property Development?</h2>
+    <p>See Proptivio in action with a personalised 30-minute demo. We'll walk through your specific project and show you exactly how every portal works for your team.</p>
+    <div class="cta-form">
+      <input type="email" placeholder="Enter your work email address" />
+      <button type="button">Book Free Demo →</button>
+    </div>
+    <p class="cta-trust">No credit card required &nbsp;·&nbsp; Free 14-day trial &nbsp;·&nbsp; Full setup in 48 hours</p>
+  </div>
+</section>
+
+</body>
+</html>

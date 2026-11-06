@@ -1,0 +1,10 @@
+{
+  "name": "proptivio-deploy",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Proptivio Bitrix24 Deployment Scripts",
+  "scripts": {
+    "setup": "node setup-bitrix24.js",
+    "reset": "node reset-bitrix24.js"
+  }
+}
