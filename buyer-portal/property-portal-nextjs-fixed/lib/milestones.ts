@@ -53,14 +53,14 @@ export const INTERNAL_STAGES: Record<string, string> = {
  */
 export function getMilestoneDealIds(): Record<number, string> {
   return {
-    1: '20', // Site Clearing
-    2: '24', // Piling Work
-    3: '26', // Foundation Work
-    4: '28', // Concrete Reinforcement
-    5: '30', // Electrical Wiring & Plumbing
-    6: '32', // Roofing
-    7: '34', // Internal & External Plastering
-    8: '36', // Roads & Drains
+    1: '59506', // Site Clearing
+    2: '59508', // Piling Work
+    3: '59510', // Foundation Work
+    4: '59512', // Concrete Reinforcement
+    5: '59514', // Electrical Wiring & Plumbing
+    6: '59516', // Roofing
+    7: '59518', // Internal & External Plastering
+    8: '59520', // Roads & Drains
   };
 }
 
@@ -87,17 +87,22 @@ export function getStageToMilestoneMapping(): Record<string, number> {
 export function getMilestoneStatus(
   stageId: string
 ): 'Not Started' | 'In Progress' | 'Completed' | 'Cancelled' {
-  // C6 stages (milestone deals)
-  if (stageId.startsWith('C6:')) {
+  // C152 stages (milestone deals in Construction Cost pipeline)
+  if (stageId.startsWith('C152:')) {
     switch (stageId) {
-      case 'C6:WON':
+      case 'C152:WON':
         return 'Completed';
-      case 'C6:PREPARATION':
-      case 'C6:PREPAYMENT_INVOICE':
+      case 'C152:PREPARATION':
+      case 'C152:PREPAYMENT_INVOI':
+      case 'C152:EXECUTING':
+      case 'C152:FINAL_INVOICE':
+      case 'C152:UC_ROOFING':
+      case 'C152:UC_PLASTERING':
+      case 'C152:UC_ROADS':
         return 'In Progress';
-      case 'C6:LOSE':
+      case 'C152:LOSE':
         return 'Cancelled';
-      case 'C6:NEW':
+      case 'C152:NEW':
       default:
         return 'Not Started';
     }
@@ -126,17 +131,17 @@ export function getMilestoneStatus(
  * Get internal stage name from stage ID
  */
 export function getMilestoneInternalStage(stageId: string): string {
-  if (stageId.startsWith('C6:')) {
+  if (stageId.startsWith('C152:')) {
     switch (stageId) {
-      case 'C6:NEW':
+      case 'C152:NEW':
         return 'New';
-      case 'C6:PREPARATION':
+      case 'C152:PREPARATION':
         return 'Verification';
-      case 'C6:PREPAYMENT_INVOICE':
+      case 'C152:PREPAYMENT_INVOI':
         return 'Billing';
-      case 'C6:WON':
+      case 'C152:WON':
         return 'Success';
-      case 'C6:LOSE':
+      case 'C152:LOSE':
         return 'Lost';
       default:
         return 'New';
@@ -162,24 +167,24 @@ export function getInternalStagesStatus(stageId: string): {
     close_deal: 'Pending' as 'Completed' | 'Pending',
   };
 
-  if (stageId.startsWith('C6:')) {
+  if (stageId.startsWith('C152:')) {
     switch (stageId) {
-      case 'C6:WON':
+      case 'C152:WON':
         stages.new = 'Completed';
         stages.verification = 'Completed';
         stages.billing = 'Completed';
         stages.close_deal = 'Completed';
         break;
-      case 'C6:PREPAYMENT_INVOICE':
+      case 'C152:PREPAYMENT_INVOI':
         stages.new = 'Completed';
         stages.verification = 'Completed';
         stages.billing = 'Completed';
         break;
-      case 'C6:PREPARATION':
+      case 'C152:PREPARATION':
         stages.new = 'Completed';
         stages.verification = 'Completed';
         break;
-      case 'C6:NEW':
+      case 'C152:NEW':
       default:
         stages.new = 'Completed';
         break;
@@ -300,7 +305,7 @@ export async function getAllMilestonesForUnit(
       end_date: null,
       progress: 0,
       pictures: [],
-      milestone_stage_id: 'C6:NEW',
+      milestone_stage_id: 'C152:NEW',
       internal_stage: 'New',
       internal_stages_status: {
         new: 'Pending',
@@ -312,7 +317,7 @@ export async function getAllMilestonesForUnit(
 
     if (milestoneDealData?.result) {
       const milestoneDeal = milestoneDealData.result;
-      const milestoneStageId = milestoneDeal.STAGE_ID || 'C6:NEW';
+      const milestoneStageId = milestoneDeal.STAGE_ID || 'C152:NEW';
 
       // Process files
       const pictures = processBitrix24Files(
