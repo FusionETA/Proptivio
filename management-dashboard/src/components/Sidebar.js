@@ -43,7 +43,7 @@ export default function Sidebar() {
         })}
       </nav>
       <div style={{ marginTop: 'auto' }}>
-        <div style={{ padding: '12px 16px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+        <div style={{ padding: '12px 16px', borderTop: '1px solid var(--gray-100)' }}>
           <button
             onClick={toggleLanguage}
             style={{
@@ -52,10 +52,10 @@ export default function Sidebar() {
               alignItems: 'center',
               gap: '8px',
               padding: '8px 12px',
-              background: 'rgba(255,255,255,0.1)',
-              border: '1px solid rgba(255,255,255,0.2)',
+              background: 'var(--gold-100)',
+              border: '1px solid var(--gold-500)',
               borderRadius: '8px',
-              color: '#fff',
+              color: 'var(--gray-900)',
               fontSize: '13px',
               fontWeight: 600,
               cursor: 'pointer',
@@ -65,7 +65,7 @@ export default function Sidebar() {
             {language === 'en' ? '中文' : 'English'}
           </button>
         </div>
-        <div style={{ padding: '16px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+        <div style={{ padding: '16px', borderTop: '1px solid var(--gray-100)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{
             width: '36px',
@@ -82,8 +82,8 @@ export default function Sidebar() {
             PM
           </div>
           <div>
-            <p style={{ margin: 0, color: '#fff', fontWeight: 500, fontSize: '14px' }}>Proptivio Admin</p>
-            <p style={{ margin: 0, color: 'rgba(255,255,255,0.6)', fontSize: '12px' }}>{t.adminRole}</p>
+            <p style={{ margin: 0, color: 'var(--gray-900)', fontWeight: 500, fontSize: '14px' }}>Proptivio Admin</p>
+            <p style={{ margin: 0, color: 'var(--gray-500)', fontSize: '12px' }}>{t.adminRole}</p>
           </div>
         </div>
         </div>
