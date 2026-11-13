@@ -39,7 +39,7 @@ export default function Home() {
         setLoading(true);
         try {
             // Add timestamp to prevent caching
-            const response = await fetch(`/api/units?_=${Date.now()}`);
+            const response = await fetch(`/sales/api/units?_=${Date.now()}`);
             const data = await response.json();
 
             if (data.success) {
@@ -112,7 +112,7 @@ export default function Home() {
     const handleBookingSubmit = async (bookingData) => {
         setLoading(true);
         try {
-            const response = await fetch('/api/booking', {
+            const response = await fetch('/sales/api/booking', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -1,7 +1,7 @@
 "use client";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, FolderKanban, BarChart3, Settings, Users, ArrowLeftRight } from 'lucide-react';
+import { LayoutDashboard, FolderKanban, BarChart3, Settings, Users, ArrowLeftRight, Globe } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 
 const navItems = [
@@ -14,7 +14,7 @@ const navItems = [
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const { t } = useLanguage();
+  const { t, language, toggleLanguage } = useLanguage();
 
   const navItems = [
     { name: t.navDashboard, path: '/', icon: LayoutDashboard },
@@ -42,7 +42,30 @@ export default function Sidebar() {
           );
         })}
       </nav>
-      <div style={{ marginTop: 'auto', padding: '16px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+      <div style={{ marginTop: 'auto' }}>
+        <div style={{ padding: '12px 16px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+          <button
+            onClick={toggleLanguage}
+            style={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '8px 12px',
+              background: 'rgba(255,255,255,0.1)',
+              border: '1px solid rgba(255,255,255,0.2)',
+              borderRadius: '8px',
+              color: '#fff',
+              fontSize: '13px',
+              fontWeight: 600,
+              cursor: 'pointer',
+            }}
+          >
+            <Globe size={15} />
+            {language === 'en' ? '中文' : 'English'}
+          </button>
+        </div>
+        <div style={{ padding: '16px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{
             width: '36px',
@@ -62,6 +85,7 @@ export default function Sidebar() {
             <p style={{ margin: 0, color: '#fff', fontWeight: 500, fontSize: '14px' }}>Proptivio Admin</p>
             <p style={{ margin: 0, color: 'rgba(255,255,255,0.6)', fontSize: '12px' }}>{t.adminRole}</p>
           </div>
+        </div>
         </div>
       </div>
     </aside>

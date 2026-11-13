@@ -50,6 +50,7 @@ export default function LoginPage() {
               width={120}
               height={120}
               priority
+              unoptimized
             />
           </div>
           <h1 className={styles.loginTitle}>Buyer Portal</h1>

@@ -17,7 +17,7 @@ export default function LoginPage() {
         setLoading(true);
 
         try {
-            const response = await fetch('/api/auth/login', {
+            const response = await fetch('/sales/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -52,7 +52,7 @@ export default function LoginPage() {
                 <div className="text-center mb-8">
                     <div className="inline-block p-1 mb-4">
                         <img
-                            src="/logo.svg"
+                            src="/sales/logo.svg"
                             alt="Proptivio Logo"
                             className="h-16 w-auto object-contain mx-auto"
                         />

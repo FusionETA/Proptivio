@@ -5,7 +5,7 @@ import { translations } from './translations';
 const LanguageContext = createContext();
 
 export function LanguageProvider({ children }) {
-    const [language, setLanguage] = useState('zh');
+    const [language, setLanguage] = useState('en');
 
     // Load language from local storage on mount
     // Load language from local storage on mount

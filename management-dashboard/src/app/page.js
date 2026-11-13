@@ -4,11 +4,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { getDashboardData, isSold } from '@/lib/bitrix';
 import { BOOKING_EXCLUDED_STAGES, SALES_STAGES } from '@/lib/constants';
-import { Building2, TrendingUp, DollarSign, Home, ChevronDown, Globe } from 'lucide-react';
+import { Building2, TrendingUp, DollarSign, Home, ChevronDown } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Dashboard() {
-  const { t, language, toggleLanguage } = useLanguage();
+  const { t } = useLanguage();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -120,13 +120,6 @@ export default function Dashboard() {
           <h1 style={styles.title}>{t.dashboardTitle}</h1>
         </div>
         <div style={styles.controls}>
-          <button
-            onClick={toggleLanguage}
-            style={{ ...styles.toggleBtn, marginRight: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}
-          >
-            <Globe size={16} />
-            {language === 'en' ? '中文' : 'English'}
-          </button>
           <select
             value={projectFilter}
             onChange={(e) => setProjectFilter(e.target.value)}

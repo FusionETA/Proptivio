@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, "min-h-screen text-gray-900 antialiased bg-[url('/gold_theme_2.jpeg')] bg-cover bg-center bg-fixed")}>
+      <body className={cn(inter.className, "min-h-screen text-gray-900 antialiased bg-[url('/commission/gold_theme_2.jpeg')] bg-cover bg-center bg-fixed")}>
         {children}
       </body>
     </html>

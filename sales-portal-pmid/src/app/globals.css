@@ -22,7 +22,7 @@ body::before {
   width: 100%;
   height: 100%;
   z-index: -1;
-  background: url('/background.jpg') no-repeat center center fixed;
+  background: url('/sales/background.jpg') no-repeat center center fixed;
   background-size: cover;
   opacity: 0.85;
   /* Slight transparency to let white background blending work better, or just purely for dimming */
