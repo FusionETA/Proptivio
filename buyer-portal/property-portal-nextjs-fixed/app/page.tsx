@@ -44,13 +44,12 @@ export default function LoginPage() {
       <div className={styles.loginCard}>
         <div className={styles.loginHeader}>
           <div className={styles.loginIcon}>
-            <Image
-              src="/proptivio-logo.svg"
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/buyer/proptivio-logo.svg"
               alt="Proptivio Sdn Bhd"
               width={120}
               height={120}
-              priority
-              unoptimized
             />
           </div>
           <h1 className={styles.loginTitle}>Buyer Portal</h1>
