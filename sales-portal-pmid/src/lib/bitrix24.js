@@ -42,7 +42,7 @@ class Bitrix24Service {
         const params = {
             order: { "ID": "ASC" },
             filter: { "ACTIVE": "Y", "SECTION_ID": 108 }, // ABC Soho section
-            select: ["ID", "NAME", "PRICE", "CURRENCY_ID", "SECTION_ID", "PROPERTY_540", "PROPERTY_542", "PROPERTY_544"]
+            select: ["ID", "NAME", "PRICE", "CURRENCY_ID", "SECTION_ID", "PROPERTY_108", "PROPERTY_540", "PROPERTY_542", "PROPERTY_544"]
         };
 
         // Handle pagination
@@ -80,10 +80,11 @@ class Bitrix24Service {
             const floor = nameMatch ? parseInt(nameMatch[1]).toString() : 'G';
             const type = nameMatch ? nameMatch[2] : 'Unit';
 
+            const bookedFlag = unit.PROPERTY_108?.value ?? unit.PROPERTY_108;
             return {
                 id: unit.ID,
                 name: unit.NAME,
-                status: 'Available',
+                status: bookedFlag ? 'Booked' : 'Available',
                 viewOrientation: 'general',
                 viewPosition: '',
                 level: floor,
@@ -107,7 +108,7 @@ class Bitrix24Service {
             const productsParams = {
                 order: { "ID": "ASC" },
                 filter: { "ACTIVE": "Y", "SECTION_ID": 110 },
-                select: ["ID", "NAME", "PRICE", "CURRENCY_ID", "SECTION_ID", "PROPERTY_540", "PROPERTY_542", "PROPERTY_544"],
+                select: ["ID", "NAME", "PRICE", "CURRENCY_ID", "SECTION_ID", "PROPERTY_108", "PROPERTY_540", "PROPERTY_542", "PROPERTY_544"],
                 start: 0
             };
 
@@ -128,7 +129,7 @@ class Bitrix24Service {
             return allProducts.map(product => ({
                 id: product.ID,
                 name: product.NAME,
-                status: 'Available',
+                status: (product.PROPERTY_108?.value ?? product.PROPERTY_108) ? 'Booked' : 'Available',
                 type: 'Retail',
                 level: 'G',
                 sqft: product.PROPERTY_540?.value ?? product.PROPERTY_540 ?? '',
