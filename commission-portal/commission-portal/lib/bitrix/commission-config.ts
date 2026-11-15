@@ -8,8 +8,8 @@ export const COMMISSION_CONFIG = {
     // Webhook URL for commission operations
     WEBHOOK_URL: 'https://fusion.bitrix24.com/rest/152/9kb90xso1fvzdknm/',
 
-    // Proptivio Commission SPA Entity Type ID (created 2026-11-05)
-    COMMISSION_ENTITY_TYPE_ID: 1312,
+    // Proptivio Commission SPA Entity Type ID (created 2026-11-15)
+    COMMISSION_ENTITY_TYPE_ID: 1316,
 
     // Commission stages with their rates (C150 = Progressive Billing pipeline)
     // Key: Stage ID, Value: Commission configuration
@@ -36,10 +36,10 @@ export const COMMISSION_CONFIG = {
 
     // Proptivio Commission SPA Categories/Pipelines (created 2026-11-05)
     CATEGORIES: {
-        TRANSACTION: 244,       // For commission transaction records
-        RATE_SETTING: 246,      // For commission rate configuration
-        STATEMENT_RECORD: 248,  // For statement records
-        APPROVAL: 250,          // For approval workflow
+        TRANSACTION: 254,       // For commission transaction records
+        RATE_SETTING: 256,      // For commission rate configuration
+        STATEMENT_RECORD: 258,  // For statement records
+        APPROVAL: 260,          // For approval workflow
     },
 } as const;
 
