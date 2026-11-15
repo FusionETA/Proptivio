@@ -1,5 +1,6 @@
 "use client";
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { LayoutDashboard, FolderKanban, BarChart3, Settings, Users, ArrowLeftRight } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
@@ -25,7 +26,8 @@ export default function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">
-        <h2><span>Proptivio</span> Dashboard</h2>
+        <Image src="/logo.svg" alt="Proptivio" width={40} height={40} style={{ borderRadius: 10, marginRight: 10, display: 'inline-block', verticalAlign: 'middle' }} />
+        <h2 style={{ display: 'inline' }}><span>Proptivio</span> Dashboard</h2>
       </div>
       <nav className="sidebar-nav">
         {navItems.map((item) => {

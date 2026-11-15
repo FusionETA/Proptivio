@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast, Toaster } from 'react-hot-toast';
+import { apiPath } from '@/lib/apiPath';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -17,7 +18,7 @@ export default function LoginPage() {
         setLoading(true);
 
         try {
-            const response = await fetch('/api/auth/login', {
+            const response = await fetch(apiPath('/api/auth/login'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

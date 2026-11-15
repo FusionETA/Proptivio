@@ -7,6 +7,7 @@ import Link from "next/link";
 import { RefreshCw, Users, DollarSign, TrendingUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import { formatCurrency } from "@/lib/bitrix/utils";
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
 interface Agent {
     id: string;
@@ -31,7 +32,7 @@ export default function AgentsPage() {
     const loadAgents = async () => {
         setLoading(true);
         try {
-            const response = await fetch('/api/agents');
+            const response = await fetch(`${BASE_PATH}/api/agents`);
             const data = await response.json();
             setAgents(data.agents || []);
             setSummary(data.summary || null);

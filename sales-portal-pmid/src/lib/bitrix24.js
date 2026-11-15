@@ -84,7 +84,7 @@ class Bitrix24Service {
             return {
                 id: unit.ID,
                 name: unit.NAME,
-                status: bookedFlag ? 'Booked' : 'Available',
+                status: bookedFlag ? 'Booking' : 'Available',
                 viewOrientation: 'general',
                 viewPosition: '',
                 level: floor,
@@ -129,7 +129,7 @@ class Bitrix24Service {
             return allProducts.map(product => ({
                 id: product.ID,
                 name: product.NAME,
-                status: (product.PROPERTY_108?.value ?? product.PROPERTY_108) ? 'Booked' : 'Available',
+                status: (product.PROPERTY_108?.value ?? product.PROPERTY_108) ? 'Booking' : 'Available',
                 type: 'Retail',
                 level: 'G',
                 sqft: product.PROPERTY_540?.value ?? product.PROPERTY_540 ?? '',

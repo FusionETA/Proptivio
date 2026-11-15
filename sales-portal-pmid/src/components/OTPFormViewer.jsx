@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import SignaturePad from './SignaturePad';
+import { apiPath } from '@/lib/apiPath';
 
 const funMessages = [
     "Brewing your document with love...",
@@ -97,7 +98,7 @@ export default function OTPFormViewer({ dealId, contactId, unitDetailsList = [],
             setStep('generating');
             setErrorMessage('');
 
-            const response = await fetch('/api/documents/generate', {
+            const response = await fetch(apiPath('/api/documents/generate'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ dealId, unitDetails: currentUnitDetails })
@@ -128,7 +129,7 @@ export default function OTPFormViewer({ dealId, contactId, unitDetailsList = [],
             setPreviewLoading(true);
             setCurrentSignatureDataUrl(signatureDataUrl);
 
-            const response = await fetch('/api/documents/preview', {
+            const response = await fetch(apiPath('/api/documents/preview'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -180,7 +181,7 @@ export default function OTPFormViewer({ dealId, contactId, unitDetailsList = [],
 
             // For multi-unit: skip PDF upload during signing, collect PDFs to merge later
             // For single-unit: upload directly as before
-            const response = await fetch('/api/documents/sign', {
+            const response = await fetch(apiPath('/api/documents/sign'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -207,7 +208,7 @@ export default function OTPFormViewer({ dealId, contactId, unitDetailsList = [],
                         // Last unit — merge all PDFs and upload
                         setStep('processing');
                         try {
-                            const mergeResponse = await fetch('/api/documents/merge-upload', {
+                            const mergeResponse = await fetch(apiPath('/api/documents/merge-upload'), {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({

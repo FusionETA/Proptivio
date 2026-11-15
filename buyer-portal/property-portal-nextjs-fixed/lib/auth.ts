@@ -1,53 +1,51 @@
 import { cookies } from 'next/headers';
-import { getContactByEmail, updateContact } from './bitrix24';
+import { getContactByEmail } from './bitrix24';
+import * as fs from 'fs';
+import * as path from 'path';
 
 const SESSION_COOKIE_NAME = 'buyer_session';
 const DEFAULT_PASSWORD = process.env.BUYER_PASSWORD || 'testtest123';
-const BITRIX_PASSWORD_FIELD = process.env.BITRIX24_FIELD_PASSWORD || 'UF_CRM_1769154272';
+const PASSWORDS_FILE = process.env.BUYER_PASSWORDS_FILE || '/root/buyer-portal-passwords.json';
 
 export interface Session {
   email: string;
   createdAt: number;
 }
 
-/**
- * Verify password
- * Checks Bitrix custom field first, then falls back to default.
- * WARNING: Passwords are stored in PLAIN TEXT for admin visibility
- */
+function loadPasswords(): Record<string, string> {
+  try {
+    if (fs.existsSync(PASSWORDS_FILE)) {
+      return JSON.parse(fs.readFileSync(PASSWORDS_FILE, 'utf8'));
+    }
+  } catch {}
+  return {};
+}
+
+function savePasswords(passwords: Record<string, string>): void {
+  try {
+    const dir = path.dirname(PASSWORDS_FILE);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(PASSWORDS_FILE, JSON.stringify(passwords, null, 2), 'utf8');
+  } catch (err) {
+    console.error('[AUTH] Failed to save passwords:', err);
+  }
+}
+
 export async function verifyPassword(email: string, inputPassword: string): Promise<boolean> {
-  // 1. Get contact data to check for custom password
   const contact = await getContactByEmail(email);
   if (!contact) {
     console.log('[AUTH] Contact not found for email:', email);
     return false;
   }
 
-  // 2. Check if user has a custom password set (stored in plain text)
-  const savedPassword = (contact as any)[BITRIX_PASSWORD_FIELD];
-  console.log('[AUTH] Checking password for:', email);
-  console.log('[AUTH] Field name:', BITRIX_PASSWORD_FIELD);
-  console.log('[AUTH] Saved password exists:', !!savedPassword);
-  console.log('[AUTH] Saved password value:', savedPassword ? savedPassword.substring(0, 3) + '***' : 'null');
-
-  if (savedPassword) {
-    // Direct plain text comparison
-    const isValid = inputPassword === savedPassword;
-    console.log('[AUTH] Password comparison result:', isValid);
-    return isValid;
+  const passwords = loadPasswords();
+  if (passwords[email]) {
+    return inputPassword === passwords[email];
   }
 
-  // 3. Fallback to default password if no custom password set
-  console.log('[AUTH] No password found, checking default password');
-  const isDefault = inputPassword === DEFAULT_PASSWORD;
-  console.log('[AUTH] Default password match:', isDefault);
-  return isDefault;
+  return inputPassword === DEFAULT_PASSWORD;
 }
 
-/**
- * Update user password
- * WARNING: Stores password in PLAIN TEXT for admin visibility
- */
 export async function updatePassword(email: string, newPassword: string): Promise<boolean> {
   const contact = await getContactByEmail(email);
   if (!contact) {
@@ -55,32 +53,18 @@ export async function updatePassword(email: string, newPassword: string): Promis
     return false;
   }
 
-  console.log('[AUTH] updatePassword: Storing plain text password for contact ID:', contact.ID);
-  console.log('[AUTH] updatePassword: Field name:', BITRIX_PASSWORD_FIELD);
-  console.log('[AUTH] updatePassword: Password preview:', newPassword.substring(0, 3) + '***');
-
-  const success = await updateContact(contact.ID, {
-    [BITRIX_PASSWORD_FIELD]: newPassword
-  });
-
-  console.log('[AUTH] updatePassword: Update result:', success);
-  return success;
+  const passwords = loadPasswords();
+  passwords[email] = newPassword;
+  savePasswords(passwords);
+  console.log('[AUTH] updatePassword: Saved password locally for:', email);
+  return true;
 }
 
-/**
- * Check if user is using default password
- */
 export async function isUsingDefaultPassword(email: string): Promise<boolean> {
-  const contact = await getContactByEmail(email);
-  if (!contact) return false;
-
-  const savedHash = (contact as any)[BITRIX_PASSWORD_FIELD];
-  return !savedHash;
+  const passwords = loadPasswords();
+  return !passwords[email];
 }
 
-/**
- * Create session
- */
 export async function createSession(email: string): Promise<void> {
   const session: Session = {
     email,
@@ -92,14 +76,11 @@ export async function createSession(email: string): Promise<void> {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    maxAge: 60 * 60 * 24 * 7, // 7 days
+    maxAge: 60 * 60 * 24 * 7,
     path: '/',
   });
 }
 
-/**
- * Get current session
- */
 export async function getSession(): Promise<Session | null> {
   try {
     const cookieStore = await cookies();
@@ -111,7 +92,6 @@ export async function getSession(): Promise<Session | null> {
 
     const session: Session = JSON.parse(sessionCookie.value);
 
-    // Validate session age (7 days)
     const sevenDays = 7 * 24 * 60 * 60 * 1000;
     if (Date.now() - session.createdAt > sevenDays) {
       await destroySession();
@@ -119,22 +99,16 @@ export async function getSession(): Promise<Session | null> {
     }
 
     return session;
-  } catch (error) {
+  } catch {
     return null;
   }
 }
 
-/**
- * Destroy session
- */
 export async function destroySession(): Promise<void> {
   const cookieStore = await cookies();
   cookieStore.delete(SESSION_COOKIE_NAME);
 }
 
-/**
- * Require authentication (for server components)
- */
 export async function requireAuth(): Promise<Session> {
   const session = await getSession();
 

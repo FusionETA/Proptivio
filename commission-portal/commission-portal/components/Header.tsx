@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
@@ -15,9 +16,12 @@ export function Header() {
     return (
         <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
             <div className="px-8 py-6">
-                <div className="mb-6">
-                    <h1 className="text-4xl font-bold text-gray-900 tracking-tight">Commission Portal</h1>
-                    <p className="text-gray-500 mt-2">Manage commission statements and approvals efficiently.</p>
+                <div className="mb-6 flex items-center gap-4">
+                    <Image src="/logo.svg" alt="Proptivio" width={48} height={48} className="rounded-xl" />
+                    <div>
+                        <h1 className="text-4xl font-bold text-gray-900 tracking-tight">Commission Portal</h1>
+                        <p className="text-gray-500 mt-1">Manage commission statements and approvals efficiently.</p>
+                    </div>
                 </div>
 
                 <nav className="flex gap-2">

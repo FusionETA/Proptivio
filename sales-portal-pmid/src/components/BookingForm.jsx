@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { apiPath } from '@/lib/apiPath';
 
 
 const InputField = ({ label, name, type = 'text', value, onChange, error, ...props }) => (
@@ -98,8 +99,8 @@ export default function BookingForm({ selectedUnits, onSubmit, onClose, loading 
         const fetchOptions = async () => {
             try {
                 const [paymentRes, nationalityRes] = await Promise.all([
-                    fetch('/api/payment-modes'),
-                    fetch('/api/nationalities')
+                    fetch(apiPath('/api/payment-modes')),
+                    fetch(apiPath('/api/nationalities'))
                 ]);
                 const paymentData = await paymentRes.json();
                 const nationalityData = await nationalityRes.json();

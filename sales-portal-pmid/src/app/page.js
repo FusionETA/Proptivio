@@ -9,6 +9,7 @@ import BookingForm from '@/components/BookingForm';
 import OTPFormViewer from '@/components/OTPFormViewer';
 import UserProfile from '@/components/UserProfile';
 import { Toaster, toast } from 'react-hot-toast';
+import { apiPath } from '@/lib/apiPath';
 
 export default function Home() {
     const { user, loading: authLoading, isAuthenticated } = useAuth();
@@ -39,7 +40,7 @@ export default function Home() {
         setLoading(true);
         try {
             // Add timestamp to prevent caching
-            const response = await fetch(`/api/units?_=${Date.now()}`);
+            const response = await fetch(apiPath(`/api/units?_=${Date.now()}`));
             const data = await response.json();
 
             if (data.success) {
@@ -112,7 +113,7 @@ export default function Home() {
     const handleBookingSubmit = async (bookingData) => {
         setLoading(true);
         try {
-            const response = await fetch('/api/booking', {
+            const response = await fetch(apiPath('/api/booking'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
